@@ -1,0 +1,58 @@
+# VLAN
+#
+# - VLAN-okat minden telephely hasznosít, a hálózati eszközök menedzselésének elkülönítése érdekében.
+# - Az Alhálózatok VLSM módszerrel lettek megállapítva.
+# - Az ASA-s hálózatban trunk hiányában két 
+
+# Kőbányai hálózatok
+vlan 10
+name KLIENSEK
+vlan 20
+name SZERVEREK
+vlan 30
+name NYOMTATOK
+vlan 50
+name HALOZATIESZKOZOK
+vlan 99
+name NEMHASZNALT
+exit
+
+# Mindegyik más
+vlan 10
+name KLIENSEK
+vlan 30
+name NYOMTATOK
+vlan 50
+name HALOZATIESZKOZOK
+vlan 99
+name NEMHASZNALT
+exit
+
+
+# IP Tartományok
+#
+# - A Hálózatok telephelyenként C osztályos privát címtartománnyal vannak kiszolgálva.
+# - A budapesti (X. ker.) telephely a 192.168.100.0/24-es hálózatot használja,
+#   a többi telephely a harmadik octet növelésével kapott hálózatot fogják használni.
+
+# Sorszám	Név	VLAN-száma	Hálózat	Átjáró	Maszk	Prefix	Tartomány	Szórási-cím
+# Kőbányai hálózatok
+1.	Kliensek	VLAN10	192.168.100.0	192.168.100.1	255.255.255.128	/25	192.168.100.2 - 192.168.100.126	192.168.100.127
+2.	Hálózati Eszk.	VLAN50	192.168.100.128	192.168.100.129	255.255.255.248	/29	192.168.100.130 - 192.168.100.134	192.168.100.135
+3.	Nyomtatók	VLAN30	192.168.100.136	192.168.100.137	255.255.255.248	/29	192.168.100.138 - 192.168.100.142	192.168.100.143
+4.	Szerverek	VLAN20	192.168.100.144	192.168.100.145	255.255.255.248	/29	192.168.100.146 - 192.168.100.150	192.168.100.151
+
+# Péceli hálózatok
+1.	Kliensek	VLAN10	192.168.101.0	192.168.101.1	255.255.255.128	/25	192.168.101.2 - 192.168.101.126	192.168.101.127
+2.	Hálózati Eszk.	VLAN50	192.168.101.128	192.168.101.129	255.255.255.248	/29	192.168.101.130 - 192.168.101.134	192.168.101.135
+3.	Nyomtatók	VLAN30	192.168.101.136	192.168.101.137	255.255.255.248	/29	192.168.101.138 - 192.168.101.142	192.168.101.143
+
+# Csepeli hálózatok
+1.	Kliensek	VLAN10	192.168.102.0	192.168.102.1	255.255.255.128	/25	192.168.102.2 - 192.168.102.126	192.168.102.127
+2.	Hálózati Eszk.	VLAN50	192.168.102.128	192.168.102.129	255.255.255.248	/29	192.168.102.130 - 192.168.102.134	192.168.102.135
+3.	Nyomtatók	VLAN30	192.168.102.136	192.168.102.137	255.255.255.248	/29	192.168.102.138 - 192.168.102.142	192.168.102.143
+
+# Miskolci hálózatok
+1.	Kliensek	VLAN10	192.168.103.0	192.168.103.1	255.255.255.128	/25	192.168.103.2 - 192.168.103.126	192.168.103.127
+2.	Hálózati Eszk.	VLAN50	192.168.103.128	192.168.103.129	255.255.255.248	/29	192.168.103.130 - 192.168.103.134	192.168.103.135
+3.	Nyomtatók	VLAN30	192.168.103.136	192.168.103.137	255.255.255.248	/29	192.168.103.138 - 192.168.103.142	192.168.103.143
