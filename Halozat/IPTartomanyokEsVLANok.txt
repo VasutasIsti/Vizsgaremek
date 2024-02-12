@@ -1,7 +1,6 @@
 # VLAN
 #
 # - VLAN-okat minden telephely hasznosít, a hálózati eszközök menedzselésének elkülönítése érdekében.
-# - Az Alhálózatok VLSM módszerrel lettek megállapítva.
 # - Az ASA-s hálózatban trunk hiányában két 
 
 # Kőbányai hálózatok
@@ -34,6 +33,7 @@ exit
 # - A Hálózatok telephelyenként C osztályos privát címtartománnyal vannak kiszolgálva.
 # - A budapesti (X. ker.) telephely a 192.168.100.0/24-es hálózatot használja,
 #   a többi telephely a harmadik octet növelésével kapott hálózatot fogják használni.
+# - Az Alhálózatok VLSM módszerrel lettek megállapítva.
 
 # Sorszám	Név	VLAN-száma	Hálózat	Átjáró	Maszk	Prefix	Tartomány	Szórási-cím
 # Kőbányai hálózatok
