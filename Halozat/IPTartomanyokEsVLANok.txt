@@ -16,15 +16,6 @@ vlan 99
 name NEMHASZNALT
 exit
 
-# Miskolci hálózatok (ASA)
-vlan 10
-name KLIENSEK
-vlan 50
-name HALOZATIESZKOZOK
-vlan 99
-name NEMHASZNALT
-exit
-
 # Mindegyik más
 vlan 10
 name KLIENSEK
