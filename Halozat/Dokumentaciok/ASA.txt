@@ -1,0 +1,12 @@
+# ASA konfiguráció
+#
+# - Az ASA konfigurációja alatt felvetültek kérdések, melyeket most kifejtek.
+# - Az ASA-n base liszenszel csak 2 vlan forwardolhat, de mivel a hálózati eszközök helyi és
+#   távoli elérését is biztonsítani szeretnénk. A megoldás az lett, hogy az ASA csak két VLAN-al foglalkozik:
+# - # nameif	VLAN	security-level	ip	maszk
+# - - inside	VLAN2	100	192.168.103.145	255.255.255.252
+# - - outside	VLAN1	0	DHCP	DHCP
+#
+# - Az ASA-nak szükséges lesz NAT-olnia (a teljes 192.168.103.0 hálózatot), illetve VPN kapcsolatot létesítenie a Kőbányai (szerver)
+#   hálózattal (site-to-site, split-tunnel), illetve természetesen 
+# - 
