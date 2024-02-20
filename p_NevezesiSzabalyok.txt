@@ -1,0 +1,11 @@
+# Nevezési szabályok (Naming Conventions)
+#
+# - A fájlok egyszerűbb rendszerezése érdekében a következő fájlneveket érintő szabályokat fogalmazzuk meg.
+# - 1. A fájlneve nem tartalmazhat szóközöket és ékezetes karaktereket. Szó határokat Nagybetükkel lehet jelezni ("NevezesiSzabalyok.txt")
+# - 2. A fájlnév elején meg kell jelölni a típusát. A típusok és jelölésük a következők:
+# - - - p_	projekt segítő leírások / nem feltétlenül dokumentálandó, de megőrizendő esetekre
+# - - - d_	dokumentácios fájlok (még folyamatban lévő / nem véglegesített) .txt kiterjesztésű dokumentációs fájlok
+# - - - D_	dokumentációs fájlok (befejezett) .pdf, .xlsx, vagy egyébb kiterjesztésű fájlok (lehetőleg NEM szerkeszthetőek)
+# - - - c_	eszköz konfigurációs fájlok (még nem teljes) .txt fájlkiterjesztéssel (elsődlegesen hálózati eszközök)
+# - - - C_	eszköz konfigurációs fájlok (befejezett) .txt fájlkiterjesztéssel (elsődlegesen hálózati eszközök)
+# - - - b_	!!!	binárisok (csak indokolt esetben (nagy fájlokat nem tudunk tárolni github-on))
