@@ -1,0 +1,12 @@
+1. Üdvözlés
+2. A Csapat
+3. Cég ismertetés
+4-7. Hálózat ismertetés (különböző telephelyek (Kőbánya, Miskolc, többi))
+8. IP címzés és VLAN-ok
+9. Mi valósult meg eddig?
+10-11. Szerverek
+10. Problémák - Routerek
+11-12. Problémák - ASA
+11. Trello
+12. Github és fájlnév szabályok (NC)
+13. Vége?
