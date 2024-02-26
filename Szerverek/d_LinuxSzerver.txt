@@ -1,0 +1,5 @@
+Operációs rendszer: Ubuntu Server 22.04 (Ezt még pontosabban meg kell nézni)
+Szolgáltatások:
+-	Webszerver (Apache2, PHP 8.x)
+-	Adatbázis kiszolgáló (phpmyadmin felület, MySQL adatbázis)
+-	TFTP szerver a hálózati eszközok konfigurációs fájljainak tárolására
