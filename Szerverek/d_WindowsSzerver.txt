@@ -1,0 +1,10 @@
+Operációs rendszer: Windows Server 2019
+Szolgáltatások:
+-	Tartományvezérlő - Active Directory Domain Controller
+-	DNS szerver
+-	DHCP szerver a kőbányai hálózatban
+-	Biztonsági mentések
+
+Még semmi különleges GPO
+Még semmilyen másik felhasználó
+Még semmilyen csoport
