@@ -1,5 +1,22 @@
-Operációs rendszer: Ubuntu Server 22.04 (Ezt még pontosabban meg kell nézni)
+Debian 12 Bookworm (Ezt még pontosabban meg kell nézni)
 Szolgáltatások:
--	Webszerver (Apache2, PHP 8.x)
--	Adatbázis kiszolgáló (phpmyadmin felület, MySQL adatbázis)
--	TFTP szerver a hálózati eszközok konfigurációs fájljainak tárolására
+-	smbclient - A CIFS fájlrendszerek böngészésére a windows szerveren, magán a linux szerveren nincsen fájlmegosztó szerver
+-	vsftpd - Egy FTP-t megalósító szerver, például a hálózati eszközök konfigurációit tárolhatjuk rajta
+	- 	Lokális felhasználóval lehet rá belépni, nincsen anonim
+	- 	A /home/ftp mappába mennek a fájlok
+-	tftpd-hpa és tftp-hpa - A TFTP szervert megvalósító csomagok. Azért kell, hogy a hálózati eszközök konfigurációit és esetlegesen a binárisait tudjuk tárolni
+	- 	A configok módosítottuk, hogyha nem létezik a szerveren a fájl, akkor hozza létre
+	- 	A /configok mappába mennek a fájlok
+-	apache2 - Egy webszerver
+-	php - PHP értelmező csomag, hogy ismerje a php kódot a szerverünk
+-	libapache2-mod-php - Az apache2 webszerver kiegészítő könyvtára, hogy a szerveren futó php kódokat is értelmezze
+-	mariadb-server - Adatbázis-szerver csomag
+-	phpmyadmin - Egy grafikus adatbáziskezelő csomag, amit egy böngészőből kell megnyitni
+-	cockpit - Lehetővé teszi a linux szerver böngészőből megnyitható, grafikus monitorozását.
+-	rsyslog - Syslog szerver. Összegyűjti a hálózati eszközök naplóbejegyzéseit
+-	ntp - A hálózati eszközök számára a naplózáshoz szükséges pontos időt és dátumot adja meg.
+	- 	NTP szervernek lettek beállítva:
+		- 	0.hu.pool.ntp.org
+		- 	1.hu.pool.ntp.org
+		- 	2.hu.pool.ntp.org
+		- 	3.hu.pool.ntp.org
