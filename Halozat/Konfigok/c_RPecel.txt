@@ -1,0 +1,80 @@
+hostname RPecel
+username localAdmin privilege 15 password Passw0rd
+enable password Passw0rd
+ip domain-name computerceg.hu
+
+crypto key generate general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 600
+ip ssh authentication-retries 3
+aaa new-modell
+aaa authentication login Bejelentkezes group radius local-case
+radius-server host 192.168.100.147 key Passw0rd
+
+crypto isakmp policy 5
+hash sha
+authentication pre-share
+group 5
+lifetime 40000
+encryption aes
+exit
+crypto isakmp key Passw0rd address 10.0.0.2
+crypto isakmp key Passw0rd address 10.0.0.10
+
+crypto ipsec transform-set TrSet esp-aes
+crypto ipsec security-association lifetime seconds 40000
+
+ip access-list extended 20
+permit ip 192.168.101.0 0.0.0.127 192.168.100.144 0.0.0.7
+permit ip 192.168.100.144 0.0.0.7 192.168.101.0 0.0.0.127
+exit
+
+crypto map PecelMap 1 ipsec-isakmp
+match address 20
+set peer 10.0.0.2
+set transform-set TrSet
+
+crypto map PecelMap 2 ipsec-isakmp
+match address 20
+set peer 10.0.0.10
+set transform-set TrSet
+
+line vty 0 15
+tranpsport input ssh
+login authentication Bejelentkezes
+exit
+line console 0
+logging synchronous
+exit
+
+interface Gigabit0/0
+ip address dhcp
+ip nat outside
+crypto map PecelMap
+no shutdown
+exit
+interface Gigabit0/1.10
+description Kliensek
+encapsulation dot1q 10
+ip address 192.168.101.1 255.255.255.128
+ip nat inside
+exit
+interface Gigabit0/1.50
+description Halozati Eszkozok
+encapsulation dot1q 50
+ip address 192.168.101.129 255.255.255.248
+ip nat inside
+exit
+interface Gigabit0/1.30
+description Nyomatatok
+encapsulation dot1q 30
+ip address 192.168.101.137 255.255.255.248
+ip nat inside
+exit
+interface Gigabit0/1
+no shutdown
+exit
+
+ip route 0.0.0.0 0.0.0.0 10.0.0.17
+access-list 10 permit 192.168.101.0 0.0.0.127
+ip nat inside source list 10 interface G0/0 overload

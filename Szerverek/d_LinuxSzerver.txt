@@ -21,3 +21,5 @@ Szolgáltatások:
 		- 	2.hu.pool.ntp.org
 		- 	3.hu.pool.ntp.org
 -	ufw - Tűzfal szolgáltatás
+-	ssh - ssh kliens és szerver szolgáltatás a szerver távoli eléréséhez
+-	freeradius - a hálózati eszközökre való belépések hitelesítésére szolgál.

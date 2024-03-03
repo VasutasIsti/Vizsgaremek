@@ -1,0 +1,47 @@
+Vizsgaremek
+készítette: Nagy István
+Bevezetés
+Jelen dokumentáció egy fiktív számítógép szervíz és bolthálózat, a Computerceg Kft. informatikai hálózatát, illetve szerver szolgáltatásait mutatja be.
+A cégről és telephelyeiről a következőket érdemes tudni: 4 telephellyel rendelkeznek, ebből a kőbányai telephely funkcionál fő telephelyként - itt találhatóak meg a cég szerverei, illetve itt egy magasabb létszámmal folyik a munka (kb. 20 fő, a többi telephelyen kb. 10 fő). A telephelyek mindegyikén zajlik számítástechnikai eszközök eladása illetve javításra alkalmas eszközök szervizelése.
+A fő telephelyen található szerverek főbb funkcionalitásai, szolgáltatásai közé tartozik a boltok raktárkészletének követését végző adatbázis szerver; az ezt és az esetleges céges Weboldalt kiszolgáló webszerver; központi, közös fájltárolási megoldás; utóbbi hitelesítéséhez használt tartomány vezérlés és tartományi felhasználók kezelése; hálózati névfeloldás és annak szűrése; illetve a helyi (kőbányai) hálózatok dinamikus IP cím kiosztását kezelő DHCP szerver.
+A telephelyek közötti kapcsolat VPN-ekkel van megoldva, mivel a cég méretéből és forgalmából kifolyólag nem igényel bérelt vonalt vagy akár saját telephely-közi infrastruktúra kiépítését és üzemeltetését. A VPN kapcsolatokat akár különbőző internet szolgáltatók hálózatán keresztül is be lehet üzemelni, VPN-tunnelling technológiája pedig képes a telephelyek közötti adatforgalom titkosítására is.
+A külső telephelyek hálózati kialakítása mind funkcionalitásuk egyezősége, mind egyfajta szabályosság, szabványosság megteremtés miatt hasonlítanak egymásra, ezzel is későbbi hibakeresések, illetve hálózat fejlesztési lehetőségek egyszerűbb kivitelezéséhez alkalmas közeg megteremtése volt a cél.
+Limitációk
+Jelen dokumentáció nem szimulálja le különböző hálózati szolgáltatók jelenlétét (lásd Redundancia), így a kőbányai hálózat jelenleg csak egy átjárón keresztül érhető el. Az ezt a feladatot ellátó ASA 5505-ös eszközt csak a szimulációk teljessége érdekében alkalmaztuk, különösebben értékes feladatokat nem lát el.
+Hálózat Megvalósítása
+A Hálózat Logikai Topológiája
+A cég hálózata 4 telephelyet tartalmaz, a külső telephelyek a fő telephellyel site-to-site IPsec VPN-el, valamint GRE over IPsec VPN-el vannak összeköttetve, előbbi az általános forgalmaknak, utóbbi pedig a dinamikus forgalomiránytó protokollok forgalmának van fenntartva.
+Mindegyik telephely fel van bontva virtuális alhálózatokra, amik segítségével a hálózati forgalmakat lehet korlátozni. A korlátozás fő lényege, hogy például jogosulatlan eszközökről ne lehessen hozzáférni a telephelyi hálózatok gerincét képező 2. és 3. réteg beli eszközökhöz, illetve nyomtatókhoz.
+A szabványosság érdekében a különböző telephelyek IP címzési sémája szinte teljesen azonos. A telephelyek hálózatait egymástól az IP címük 3. octetje alapján lehet megkülönböztetni - a kőbányai hálózatok a 192.168.100.x címeket használják, a péceli hálózatok a 192.168.101.x címeket használják, stb. A szabványosság másik megnyilvánulása, hogy az azonos VLAN-okban azonos IP cím tartományok találhatók, például a 10-es VLAN (KLIENSEK) minden hálózatban az első 128 címet tartalmazza, az 50-es VLAN a következő 8 címet, és így tovább. Ezen alhálózatok tartományánainak eloszlása a VLSM módszerrel lett megállapítva. A tényleges IP tartományokról egy későbbi fejezetben lesz szó.
+Kivételes eset, hogy az egyik telephely egy már meglévő eszköz miatt a többi (külső) telephelyen megszokot hálózati infrastruktúra(1 forgalomiránytó és 1 kapcsoló) egy ASA tűzfal eszközt tartalmaz, illetve a helyi VLAN-ok kezelése okán egy több rétegű kapcsoló kapott helyt.
+Telephelyek Hálózati Infrastruktúrája
+Kőbánya
+A kőbányai telephely a cég központja, itt található szerverek szolgáltatásait az összes külső telephelyen dolgozó alkalmazott használja. A magasabb elérhetőségi szint érdekében a kőbányai hálózat két átjáróval is rendelkezik az internet felé, melyek valós esetben két külön szolgáltatónál lennének bekötve. Emellett a belső hálózati szegmensben két switch található, amik egymással is összeköttetésben álnak Etherchannel technológiával. Ez mind kábel hibák, mind hálózati eszköz kieséséből adódó helyzeteket is képes áthidalni. Ez a két megoldás valósítja meg a második és harmadik rétegbeli redundanciát.
+Az itt található szerverekről egy későbbi fejezetben lesz szó.
+Miskolc
+A miskolci telephelyen egy már birtokolt eszköz miatt egy ASA illetve egy több rétegű switch található, mint gerinc eszközök. Az ASA látja el az átjáró szerepét a miskolci nagy hálózat számára, tűzfal funkcionalitást, hálózati címfordítást, valamint a kőbányai szerverekhez való hozzáférés alapját, a VPN kapcsolatot szolgáltatja. A több rétegű switch az ASA liszenszének limitációja miatt vált szükségessé, ugyanis alap esetben ez a liszensz csak 2 VLAN-t képes teljesértékűen kezelni, hármat már csak megszorításokkal, többet pedig egyáltalán nem. A több rétegű switch valósítja meg a VLAN-ok kezelését, a közöttük, illetve az ASA felé elérhető külső hálózatok felé történő forgalmak irányítását.
+A miskolci hálózat minden más paraméterében megegyezik a másik két telephely paramétereivel.
+Csepel és Pécel
+A csepeli és péceli hálózatok szinte teljesen megegyeznek egymással. Ezekben a hálózatokban egy router és egy switch található, mint gerinc eszközök. A router szolgáltatja a címfordítást, a kőbányai szerverek VPN-es elérését, valamint általánosságban a forgalomirányítást. A switch alapvetően csak csatlakozó töbszörözés és VLAN szétválasztási funkciókat lát el.
+Felhasznált Hálózati Technológiák
+Etherchannel
+A kőbányai hálózatban a két switch között Etherchannel technológiával több fizikai vonalat egy logikai vonalként használunk, ezzel az egyes kábelek esetleges hibája esetén is képesek vagyunk a switchek közötti adattovábbításra, illetve ezen csatlakozások sávszélessége össze is adódik. Mivel csak Cisco eszközök vannak használatban, így a PAgP protokoll részesült előnyben. Az alkalmazott beállítások egy későbbi fejeztben lesznek kifejtve.
+VLAN
+Mindegyik telephely rendelkezik VLAN alhálózatokkal. A VLAN szabványok közül a 802.1q szabvány került alkalmazásra. Fontos szabályok:
+A Trunk vonalakon csak a használatos VLAN-ok (10,20,30,50) lehetnek engedélyezve, natív VLAN-nak a 99-et (NEMHASZNALT) kell használni.
+A nem használt interfészeket a 99-es VLAN-ba (NEMHASZNALT) kell rendelni, valamint azokat le kell kapcsolni.
+Az alkalmazott beállítások egy későbbi fejezetben lesznek kifejtve.
+SSH
+A hálózati eszközök a VPN-ből bármikor elérhetőek, távoli konfigurálásuk SSH protokollon keresztül lehetséges. Az SSH protokoll beállításait, illetve beállításának előfeltételét jelentő beállításokat (domain név, kulcsok, stb.) egy későbbi fejezet fejti ki.
+VPN
+A külső telephelyekről történő szerver elérés VPN-ek keresztül zajlik. Az alap forgalmakra a hálózatok átjárói között megvalósított site-to-site IPsec VPN lesz fenntartva, míg a különböző belső forgalomirányító protokolloknak ezen az IPsec VPN-en keresztül lesz vezetve egy GRE tunnel, hogy ezek a csomagok se maradjanak titkosítás nélkül az interneten. Minden olyan forgalom, ami nem a szerver felé megy, azok az internet irányába hagyják el a külső telephelyek hálózatát. Az olyan forgalmak, melyek egy külső telephelyről a főtelephely szervereire irányulnak, a VPN tunnelen keresztül fogják elhagyni a hálózatot, amin titkosítva érnek át a főtelephely hálózatába. Az IPsec VPN, valamint a GRE tunnel beállításait egy későbbi fejezet fejti ki.
+Hálózati Alkalmazások
+Radius
+A hálózati eszközök konfiguráláshoz megfelelő jogosultsággal kell rendelkezni. A Radius segítségével egy központi listában tudjuk tárolni a jogosult felhasználókat (hálózati rendszergazdákat), melynek szolgáltatása a Linux szerverről fog történni. Természetes a Radius szerver elérhetetlensége esetén egy lokális authentikáció is elérhető marad, de azt csak és kizárólag Radius szerver mentes időkben lehet kihasználni. A beállítások egy későbbi fejezetben lesznek kifejtve.
+FTP és TFTP
+Ezen szolgáltatások elsődlegesen a hálózati eszközök biztonsági mentéseire van fenntartva. A két protokoll a hálózati eszközöknél nagyobb toleráló képességet gyakorol, mivel van olyan eszköz, ami csak ftp, vagy csak tftp-n keresztül képes fájlátvitelt lebonyolítani. A beállításokat egy későbbi fejezet fejti ki.
+Rsyslog
+A hálózati eszközök naplófájljait a Linux szerver gyüjti. Ezen szolgáltatás teszi lehetővé a naplófájlok fogadását és tárolását. Beállításait egy későbbi fejezet fejti ki.
+NTP
+A hálózati eszközök és akár a végberendezések rendszer idejét érdemes szinkronban tartani. Ezt a célt szolgálja az NTP, ami a rendszeridőt hálózaton keresztül állítja be. NTP szolgáltatás a Linux szerveren fut, mely egy magyarországi időszerverről kéri le a pontos időt. A beállításokat egy későbbi fejezet fejti ki.
+Beállítások és Parancsok
