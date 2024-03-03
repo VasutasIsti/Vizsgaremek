@@ -75,6 +75,24 @@ interface Gigabit0/1
 no shutdown
 exit
 
+router eigrp 1
+no auto-summary
+passive-interface default
+no passive-interface G0/0
+network 192.168.101.0 0.0.0.255
+
 ip route 0.0.0.0 0.0.0.0 10.0.0.17
-access-list 10 permit 192.168.101.0 0.0.0.127
-ip nat inside source list 10 interface G0/0 overload
+ip access-list extended 101 
+deny ip 192.168.101.0 0.0.0.255 192.168.100.0 0.0.0.255
+permit ip 192.168.101.0 0.0.0.127 any
+ip nat inside source list 101 interface G0/0 overload
+logging on
+logging trap
+logging host 192.168.100.147
+
+ip dhcp excluded-address 192.168.101.1 192.168.101.2
+ip dhcp pool Kliensek
+dns-server 192.168.100.146
+default-router 192.168.101.1
+network 192.168.101.0 255.255.255.128
+exit
