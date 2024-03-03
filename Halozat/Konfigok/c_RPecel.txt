@@ -11,6 +11,11 @@ aaa new-modell
 aaa authentication login Bejelentkezes group radius local-case
 radius-server host 192.168.100.147 key Passw0rd
 
+ntp server 192.168.100.147
+ntp authenticate
+ntp authentication-key 1 md5 Passw0rd
+service timestamps log datetime msec
+
 crypto isakmp policy 5
 hash sha
 authentication pre-share
