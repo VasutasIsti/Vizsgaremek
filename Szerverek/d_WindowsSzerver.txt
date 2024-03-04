@@ -12,7 +12,7 @@ Még semmilyen csoport
 
 Eszköz beállítások
 
-- IP: 192.168.100.148 255.255.255.248
+- IP: 192.168.100.146 255.255.255.248
 - Gépnév: computercegWIN
 - domain: computerceg.lan
 - telepítendő szerepkörök:
@@ -25,19 +25,19 @@ Eszköz beállítások
 DHCP beállítások
 
 - scope: Kliensek
-- IP tartomány: 192.168.100.4 - 192.168.100.126
+- IP tartomány: 192.168.100.2 - 192.168.100.126
 - maszk: /25, avagy 255.255.255.128
 - kizárt címek: nincs (csak a tartomány eleje lehetne (.1-.3))
 - Válasszuk az azonnali konfigurálást
 - alapértelmezett átjáró: 192.168.100.1
-- dns szerver: helyi hálózaton saját maga, 192.168.100.148
+- dns szerver: helyi hálózaton saját maga, 192.168.100.146
 - aktiváljuk a scope-ot
 
 DNS beállítások
 
 - a computerceg.lan domain-ben létre kell hozni két DNS rekordot:
-	- A Windows szervernek egy WINSERVER (IP címe 192.168.100.148),
-	- A Linux szervernek egy LINUXSERVER (IP címe 192.168.100.149).
+	- A Windows szervernek egy WINSERVER (IP címe 192.168.100.146),
+	- A Linux szervernek egy LINUXSERVER (IP címe 192.168.100.147).
 
 Biztonsági mentés beállításai
 

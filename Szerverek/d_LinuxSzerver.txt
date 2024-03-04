@@ -1,11 +1,11 @@
-Debian 12 Bookworm (Ezt még pontosabban meg kell nézni)
+Debian 12.5.0 Bookworm
 Szolgáltatások:
 -	smbclient - A CIFS fájlrendszerek böngészésére a windows szerveren, magán a linux szerveren nincsen fájlmegosztó szerver
 -	vsftpd - Egy FTP-t megalósító szerver, például a hálózati eszközök konfigurációit tárolhatjuk rajta
 	- 	Lokális felhasználóval lehet rá belépni, nincsen anonim
 	- 	A /home/ftp mappába mennek a fájlok
 -	tftpd-hpa és tftp-hpa - A TFTP szervert megvalósító csomagok. Azért kell, hogy a hálózati eszközök konfigurációit és esetlegesen a binárisait tudjuk tárolni
-	- 	A configok módosítottuk, hogyha nem létezik a szerveren a fájl, akkor hozza létre
+	- 	A configot módosítottuk, hogyha nem létezik a szerveren a fájl, akkor hozza létre
 	- 	A /configok mappába mennek a fájlok
 -	apache2 - Egy webszerver
 -	php - PHP értelmező csomag, hogy ismerje a php kódot a szerverünk
