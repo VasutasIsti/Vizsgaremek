@@ -1,0 +1,175 @@
+!Alap adatok
+hostname RKobanya
+username admin privilege 15 password Passw0rd
+enable password Passw0rd
+ip domain-name computerceg.hu
+
+!tavoli eleres elokeszitese
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 120
+ip ssh authentication-retries 3
+aaa new-model
+aaa authentication login Bejelentkezes group radius local-case
+radius-server host 192.168.100.147 key Passw0rd
+
+!rendszerido
+ntp server 192.168.100.147
+ntp authenticate
+ntp authentication-key 1 md5 Passw0rd
+service timestamps log datetime msec
+
+!ike elso fazis (kesobbi implementalasra)
+!crypto isakmp policy 5
+!hash sha
+!authentication pre-share
+!group 5
+!lifetime 40000
+!encryption aes
+!exit
+!crypto isakmp key Passw0rd address 10.0.0.18
+!crypto isakmp key Passw0rd address 10.0.0.26
+!crypto isakmp key Passw0rd address 10.0.0.30
+
+!ike masodik fazis (kesobbi implementalasra)
+!crypto ipsec transform-set TrSet esp-aes
+!crypto ipsec security-association lifetime seconds 40000
+
+!VPN ACL
+ip access-list extended Kobanya-Pecel-VPN
+permit ip 192.168.101.0 0.0.0.255 192.168.100.144 0.0.0.7
+permit ip 192.168.100.144 0.0.0.7 192.168.101.0 0.0.0.255
+exit
+ip access-list extended Kobanya-Csepel-VPN
+permit ip 192.168.102.0 0.0.0.255 192.168.100.144 0.0.0.7
+permit ip 192.168.100.144 0.0.0.7 192.168.102.0 0.0.0.255
+exit
+ip access-list extended Kobanya-Miskolc-VPN
+permit ip 192.168.103.0 0.0.0.255 192.168.100.144 0.0.0.7
+permit ip 192.168.100.144 0.0.0.7 192.168.103.0 0.0.0.255
+exit
+
+!crypto map-ek (kesobbi implementalasra)
+!Pecel
+!crypto map VPNek 1 ipsec-isakmp
+!match address Kobanya-Pecel-VPN
+!set peer 10.0.0.26
+!set transform-set TrSet
+!exit
+!Csepel
+!crypto map VPNek 2 ipsec-isakmp
+!match address Kobanya-Csepel-VPN
+!set peer 10.0.0.30
+!set transform-set TrSet
+!exit
+!Miskolc
+!crypto map VPNek 3 ipsec-isakmp
+!match address Kobanya-Pecel-VPN
+!set peer 10.0.0.18
+!set transform-set TrSet
+!exit
+
+!Eleresi vonalak
+line vty 0 15
+transport input ssh
+login authentication Bejelentkezes
+exit
+line console 0
+logging synchronous
+exit
+
+!Interfeszek
+interface Gigabit0/0.70
+description Kobanya1 ISP fele
+encapsulation dot1q 70
+ip address 10.0.0.2 255.255.255.248
+ip nat outside
+!crypto map VPNek
+exit
+interface G0/0.80
+description Kobanya2 ISP fele
+encapsulation dot1q 80
+ip address 10.0.0.10 255.255.255.248
+ip nat outside
+!crypto map VPNek
+exit
+interface G0/0
+no shutdown
+exit
+interface G0/1.10
+description Kliensek
+encapsulation dot1q 10
+ip address 192.168.100.1 255.255.255.128
+ip nat inside
+exit
+interface G0/1.20
+description Szerverek
+encapsulation dot1q 20
+ip address 192.168.100.145 255.255.255.248
+ip nat inside
+exit
+interface G0/1.30
+description Nyomtatok
+encapsulation dot1q 30
+ip address 192.168.100.137 255.255.255.248
+ip nat inside
+exit
+interface G0/1.50
+description Halozati Eszkozok
+encapsulation dot1q 50
+ip address 192.168.100.129 255.255.255.248
+ip nat inside
+exit
+interface G0/1
+no shutdown
+exit
+interface tunnel1
+ip address 172.16.1.1 255.255.255.252
+no shutdown
+tunnel source G0/0.70
+tunnel destination 10.0.0.18
+exit
+interface tunnel2
+ip addres 172.16.1.5 255.255.255.252
+no shutdown
+tunnel source G0/0.80
+tunnel destination 10.0.0.18
+exit
+interface tunnel3
+ip address 172.16.1.9 255.255.255.252
+no shutdown
+tunnel source G0/0.70
+tunnel destination 10.0.0.26
+exit
+interface tunnel4
+ip address 172.16.1.13 255.255.255.252
+no shutdown
+tunnel source G0/0.80
+tunnel destination 10.0.0.30
+exit
+
+!Dinamikus forgalomiranyitas a ceges halozatok kozott
+router eigrp 1
+no auto-summary
+passive-interface default
+no passive-interface G0/0
+network 192.168.100.0 0.0.0.255
+network 172.16.1.0 0.0.0.15
+
+!statikus utvonalak, NAT es azt hasznalo halozatok, syslog
+ip route 0.0.0.0 0.0.0.0 10.0.0.17
+ip access-list extended NAT-ACL
+deny ip 192.168.101.0 0.0.0.255 192.168.100.0 0.0.0.255
+permit ip 192.168.101.0 0.0.0.127 any
+ip nat inside source list NAT-ACL interface G0/0 overload
+logging on
+logging trap
+logging host 192.168.100.147
+
+!DHCP a kliensek szamara
+ip dhcp excluded-address 192.168.101.1 192.168.101.2
+ip dhcp pool Kliensek
+dns-server 192.168.100.146
+default-router 192.168.101.1
+network 192.168.101.0 255.255.255.128
+exit

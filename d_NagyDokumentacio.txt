@@ -164,10 +164,10 @@ RKobanya	G0/0.70	vlan70	10.0.0.2	255.255.255.248	/29	Kobanya1 ISP fele
 	G0/1.20	vlan20	192.168.100.145	255.255.255.248	/29	Szerverek
 	G0/1.30	vlan30	192.168.100.137	255.255.255.248	/29	Nyomtatok
 	G0/1.50	vlan50	192.168.100.129	255.255.255.248	/29	Halozati Eszkozok
-	Tunnel1	-	172.16.1.1	255.255.255.0	/24	Kobanya1 Miskolc VPN
-	Tunnel2	-	172.16.1.2	255.255.255.0	/24	Kobanya2 Miskolc VPN
-	Tunnel3	-	172.16.1.3	255.255.255.0	/24	Kobanya1 Pecel VPN
-	Tunnel4	-	172.16.1.4	255.255.255.0	/24	Kobanya2 Csepel VPN
+	Tunnel1	-	172.16.1.1	255.255.255.252	/30	Kobanya1 Miskolc VPN
+	Tunnel2	-	172.16.1.5	255.255.255.252	/30	Kobanya2 Miskolc VPN
+	Tunnel3	-	172.16.1.9	255.255.255.252	/30	Kobanya1 Pecel VPN
+	Tunnel4	-	172.16.1.13	255.255.255.252	/30	Kobanya2 Csepel VPN
 S1Kobanya	VLAN50	-	192.168.100.130	255.255.255.248	/29	Management interface
 	F0/1-5	-	-	-	-	port channel 1
 	port-channel 1	-	-	-	-	Trunk S1 es S2 kozott
@@ -175,13 +175,14 @@ S1Kobanya	VLAN50	-	192.168.100.130	255.255.255.248	/29	Management interface
 	F0/22	vlan10	-	-	-	WifiAP
 	F0/23	vlan30	-	-	-	Nyomtato1
 	F0/24	vlan30	-	-	-	Nyomtato2
-	F0/9-24,G0/2	vlan99	-	-	-	Nem hasznalt
 	G0/1	-	-	-	-	Trunk S1 es S3 kozott
+	F0/7-21,G0/2	vlan99	-	-	-	Nem hasznalt
 S2Kobanya	VLAN50	-	192.168.100.131	255.255.255.248	/29	Management interface
 	F0/1-5	-	-	-	-	port channel 1
 	port-channel 1	-	-	-	-	Trunk S1 es S2 kozott
 	F0/6	vlan20	-	-	-	Windows server
 	F0/7	vlan20	-	-	-	Linux server
+	G0/1	-	-	-	-	Trunk S2 es S3 kozott
 	F0/8-24,G0/2	vlan99	-	-	-	Nem hasznalt
 S3Kobanya	VLAN50	-	192.168.100.132	255.255.255.248	/29	Management interface
 	F0/1	-	-	-	-	RKobanya belso Trunk
@@ -195,7 +196,7 @@ WINSERVER	LAN	-	192.168.100.146	255.255.255.248	/29	Windows server
 LINUXSERVER	LAN	-	192.168.100.147	255.255.255.248	/29	Linux server
 AMiskolc	E1/1	vlan2	10.0.0.18	255.255.255.248	/29	Miskolc ISP fele
 	E1/2	vlan1	192.168.103.129	255.255.255.248	/29	Halozati Eszkozok
-SMiskolc	VLAN1	-	192.168.103.130	255.255.255.248	/29	Halozati Eszkozok
+SMiskolc	VLAN1	-	192.168.103.130	255.255.255.248	/29	Management interface
 	VLAN10	-	192.168.103.1	255.255.255.128	/25	Kliensek
 	VLAN30	-	192.168.103.137	255.255.255.248	/29	Nyomtatok
 	F0/1	vlan1	-	-	-	Halozati Eszkozok
@@ -203,16 +204,16 @@ SMiskolc	VLAN1	-	192.168.103.130	255.255.255.248	/29	Halozati Eszkozok
 	F0/22	vlan10	-	-	-	WifiAP
 	F0/23	vlan30	-	-	-	Nyomtato1
 	F0/24	vlan30	-	-	-	Nyomtato2
-	Tunnel1	-	172.16.1.9	255.255.255.0	/24	Kobanya1 Miskolc VPN
-	Tunnel2	-	172.16.1.10	255.255.255.0	/24	Kobanya2 Miskolc VPN
+	Tunnel1	-	172.16.1.2	255.255.255.252	/30	Kobanya1 Miskolc VPN
+	Tunnel2	-	172.16.1.6	255.255.255.252	/30	Kobanya2 Miskolc VPN
 	F0/3-21,G0/1-2	vlan99	-	-	-	Nem hasznalt
 RPecel	G0/0	-	10.0.0.26	255.255.255.252	/30	Pecel ISP fele
 	G0/1.10	vlan10	192.168.101.1	255.255.255.128	/25	Kliensek
 	G0/1.30	vlan30	192.168.101.137	255.255.255.248	/29	Nyomtatok
 	G0/1.50	vlan50	192.168.101.129	255.255.255.248	/29	Halozati Eszkozok
-	Tunnel1	-	172.16.1.5	255.255.255.0	/24	Kobanya1 Pecel VPN
-	Tunnel2	-	172.16.1.6	255.255.255.0	/24	Pecel Csepel VPN
-SPecel	VLAN50	-	192.168.101.130	255.255.255.248	/29	Halozati Eszkozok
+	Tunnel1	-	172.16.1.10	255.255.255.252	/30	Kobanya1 Pecel VPN
+	Tunnel2	-	172.16.1.17	255.255.255.252	/30	Pecel Csepel VPN
+SPecel	VLAN50	-	192.168.101.130	255.255.255.248	/29	Management interface
 	G0/1	-	-	-	-	Trunk RPecel es SPecel kozott
 	F0/1	vlan10	-	-	-	Kliensek
 	F0/22	vlan10	-	-	-	WifiAP
@@ -223,9 +224,9 @@ RCsepel	G0/0	-	10.0.0.30	255.255.255.252	/30	Csepel ISP fele
 	G0/1.10	vlan10	192.168.102.1	255.255.255.128	/25	Kliensek
 	G0/1.30	vlan30	192.168.102.137	255.255.255.248	/29	Nyomtatok
 	G0/1.50	vlan50	192.168.102.129	255.255.255.248	/29	Halozati Eszkozok
-	Tunnel1	-	172.16.1.7	255.255.255.0	/24	Kobanya2 Csepel VPN
-	Tunnel2	-	172.16.1.8	255.255.255.0	/24	Pecel Csepel VPN
-SCepel	VLAN50	-	192.168.102.130	255.255.255.248	/29	Halozati Eszkozok
+	Tunnel1	-	172.16.1.14	255.255.255.252	/30	Kobanya2 Csepel VPN
+	Tunnel2	-	172.16.1.18	255.255.255.252	/30	Pecel Csepel VPN
+SCepel	VLAN50	-	192.168.102.130	255.255.255.248	/29	Management interface
 	G0/1	-	-	-	-	Trunk RCsepel es SCsepel kozott
 	F0/1	vlan10	-	-	-	Kliensek
 	F0/22	vlan10	-	-	-	WifiAP
@@ -366,3 +367,267 @@ dns-server 192.168.100.146
 default-router 192.168.101.1
 network 192.168.101.0 255.255.255.128
 exit
+Ezen konfigurációs állomány a péceli switchhez tartozik, annak előkészített beállító parancsai.
+!Alap adatok
+hostname SPecel
+username admin privilege 15 passwor Passw0rd
+enable password Passw0rd
+ip domain-name computerceg.hu
+ip default-gateway 192.168.101.129
+
+!tavoli eleres elokeszitese
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 120
+ip ssh authentication-retries 3
+aaa new-model
+aaa authentication login Bejelentkezes group radius local-case
+radius-server host 192.168.100.147 key Passw0rd
+
+!rendszerido
+ntp server 192.168.100.147
+ntp authenticate
+ntp authentication-key 1 md5 Passw0rd
+service timestamps log datetime msec
+
+!Eleresi vonalak
+line vty 0 15
+transport input ssh
+login authentication Bejelentkezes
+exit
+line console 0
+logging synchronous
+exit
+
+!Interfeszek
+interface vlan50
+description Management interface
+ip add 192.168.101.130 255.255.255.248
+no shutdown
+exit
+interface G0/1
+description Trunk RPecel es SPecel kozott
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,30,50
+no shutdown
+interface F0/1
+description Kliensek
+switchport mode access
+switchport access vlan 10
+no shutdown
+exit
+interface F0/22
+description WifiAP
+switchport mode access
+switchport access vlan 10
+no shutdown
+exit
+interface F0/23
+description Nyomtato1
+switchport mode access
+switchport access vlan 30
+no shutdown
+exit
+interface F0/24
+description Nyomtato2
+switchport mode access
+switchport access vlan 30
+no shutdown
+exit
+interface range f0/2-21,G0/2
+description Nem hasznalt
+switchport mode access
+switchport access vlan 99
+shutdown
+exit
+
+!syslog
+logging on
+logging trap
+logging host 192.168.100.147
+
+Ezen konfigurációs állomány a kőbányai routerhez tartozik, annak előkészített beállító parancsai
+
+Ezen konfigurációs állomány az egyik kőbányai Etherchanneles switchhez tartozik, annak előkészített beállító parancsai.
+!Alap adatok
+hostname S1Kobanya
+username admin privilege 15 passwor Passw0rd
+enable password Passw0rd
+ip domain-name computerceg.hu
+ip default-gateway 192.168.100.129
+
+!tavoli eleres elokeszitese
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 120
+ip ssh authentication-retries 3
+aaa new-model
+aaa authentication login Bejelentkezes group radius local-case
+radius-server host 192.168.100.147 key Passw0rd
+
+!rendszerido
+ntp server 192.168.100.147
+ntp authenticate
+ntp authentication-key 1 md5 Passw0rd
+service timestamps log datetime msec
+
+!Eleresi vonalak
+line vty 0 15
+transport input ssh
+login authentication Bejelentkezes
+exit
+line console 0
+logging synchronous
+exit
+
+!Interfeszek
+interface vlan50
+description Management interface
+ip add 192.168.100.130 255.255.255.248
+no shutdown
+exit
+interface range F0/1-5
+description Port-channel 1 PAgP
+shutdown
+channel-group 1 mode desirable
+no shutdown
+exit
+interface port-channel 1
+description Trunk S1Kobanya es S2Kobanya kozott
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,50
+no shutdown
+exit
+interface F0/6
+description Kliensek
+switchport mode access
+switchport access vlan 10
+no shutdown
+exit
+interface F0/22
+description WifiAP
+switchport mode access
+switchport access vlan 10
+no shutdown
+exit
+interface F0/23
+description Nyomtato1
+switchport mode access
+switchport access vlan 30
+no shutdown
+exit
+interface F0/24
+description Nyomtato2
+switchport mode access
+switchport access vlan 30
+no shutdown
+exit
+interface G0/1
+description Trunk S1Kobanya es S3Kobanya kozott
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,50
+no shutdown
+interface range f0/7-21,G0/2
+description Nem hasznalt
+switchport mode access
+switchport access vlan 99
+shutdown
+exit
+
+!syslog
+logging on
+logging trap
+logging host 192.168.100.147
+
+Ezen konfigurációs állomány a kiegészítő (harmadi) kőbányai switchhez tartozik, annak előkészített beállító parancsai.
+!Alap adatok
+hostname S3Kobanya
+username admin privilege 15 passwor Passw0rd
+enable password Passw0rd
+ip domain-name computerceg.hu
+ip default-gateway 192.168.100.129
+
+!tavoli eleres elokeszitese
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 120
+ip ssh authentication-retries 3
+aaa new-model
+aaa authentication login Bejelentkezes group radius local-case
+radius-server host 192.168.100.147 key Passw0rd
+
+!rendszerido
+ntp server 192.168.100.147
+ntp authenticate
+ntp authentication-key 1 md5 Passw0rd
+service timestamps log datetime msec
+
+!Eleresi vonalak
+line vty 0 15
+transport input ssh
+login authentication Bejelentkezes
+exit
+line console 0
+logging synchronous
+exit
+
+!Interfeszek
+interface vlan50
+description Management interface
+ip add 192.168.100.132 255.255.255.248
+no shutdown
+exit
+interface F0/1
+description RKobanya belso Trunk
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,50
+no shutdown
+exit
+interface F0/2
+description RKobanya kulso Trunk
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 70,80
+no shutdown
+exit
+interface F0/3
+description Kobanya1 ISP fele
+switchport mode access
+switchport access vlan 70
+no shutdown
+exit
+interface F0/4
+description Kobanya2 ISP fele
+switchport mode access
+switchport access vlan 80
+no shutdown
+exit
+interface G0/1
+description Trunk S1Kobanya es S3Kobanya kozott
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,50
+no shutdown
+exit
+interface G0/2
+description Trunk S2Kobanya es S3Kobanya kozott
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,50
+no shutdown
+exit
+interface range f0/5-24
+description Nem hasznalt
+switchport mode access
+switchport access vlan 99
+shutdown
+exit
+
+!syslog
+logging on
+logging trap
+logging host 192.168.100.147
