@@ -6,8 +6,8 @@ Szolgáltatások:
 -	Biztonsági mentések
 
 Még semmi különleges GPO
-Még semmilyen másik felhasználó
-Még semmilyen csoport
+A felhasználóknak nincsenek profiljaik, csak és kizárólag azonosítási célzattal léteznek.
+Egy csoport lett létrehozva (g_felhasznalok)
 
 
 Eszköz beállítások
@@ -62,3 +62,6 @@ Csoport beállítások
 Fájlmegosztás beállításai
 
 - A közös fájlmegosztást a Windows szerver Dokumentumok néven szolgáltatja, ezen mappát csak a a g_felhasznalok csoport tagjai érhetik el.
+
+Automatikus program telepítés
+- A funkció bemutatása érdekében egy már megosztott mappában található google chrome (.msi kitejesztésű) telepítőt futtat le, és ezzel minden "új" gépre ezt az aplikációt feltelepíti.
