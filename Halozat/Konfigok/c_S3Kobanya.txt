@@ -14,7 +14,8 @@ vlan 30
 name NYOMTATOK
 vlan 50
 name HALOZATIESZKOZOK
-vlan 99 NEMHASZNALT
+vlan 99
+name NEMHASZNALT
 exit
 
 !tavoli eleres elokeszitese

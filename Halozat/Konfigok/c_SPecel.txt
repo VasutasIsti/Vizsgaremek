@@ -5,6 +5,16 @@ enable password Passw0rd
 ip domain-name computerceg.hu
 ip default-gateway 192.168.101.129
 
+!VLANok
+vlan 10
+name KLIENSEK
+vlan 30
+name NYOMTATOK
+vlan 50
+name HALOZATIESZKOZOK
+vlan 99
+name NEMHASZNALT
+
 !tavoli eleres elokeszitese
 crypto key generate rsa general-keys modulus 1024
 ip ssh version 2
