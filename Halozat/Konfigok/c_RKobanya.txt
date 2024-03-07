@@ -159,12 +159,14 @@ network 172.16.1.0 0.0.0.15
 !statikus utvonalak, NAT es azt hasznalo halozatok, syslog
 ip route 0.0.0.0 0.0.0.0 10.0.0.17
 ip access-list extended NAT-ACL
-deny ip 192.168.101.0 0.0.0.255 192.168.104.0 0.0.0.255
-permit ip 192.168.101.0 0.0.0.127 any
+deny ip 192.168.104.0 0.0.0.255 192.168.101.0 0.0.0.255
+deny ip 192.168.104.0 0.0.0.255 192.168.102.0 0.0.0.255
+deny ip 192.168.104.0 0.0.0.255 192.168.103.0 0.0.0.255
+permit ip 192.168.104.0 0.0.0.127 any
 ip nat inside source list NAT-ACL interface G0/0 overload
 logging on
 logging trap
-logging host 192.168.100.147
+logging host 192.168.104.147
 
 !DHCP a kliensek szamara
 ip dhcp excluded-address 192.168.104.1 192.168.100.2
