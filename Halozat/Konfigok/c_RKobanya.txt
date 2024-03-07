@@ -169,7 +169,7 @@ logging trap
 logging host 192.168.104.147
 
 !DHCP a kliensek szamara
-ip dhcp excluded-address 192.168.104.1 192.168.100.2
+ip dhcp excluded-address 192.168.104.1 192.168.104.2
 ip dhcp pool Kliensek
 dns-server 192.168.104.146
 default-router 192.168.104.1
