@@ -1,0 +1,142 @@
+{
+    "alap":[
+        "hostname S3Kobanya",
+        "username admin privilege 15 password Passw0rd",
+        "enable password Passw0rd",
+        "ip domain-name computerceg.hu"
+    ],
+    "ssh":[
+        "crypto key generate rsa general-keys modulus 1024",
+        "ip ssh version 2",
+        "ip ssh time-out 120",
+        "ip ssh authentication-retries 3",
+        "aaa new-model",
+        "aaa authentication login Bejelentkezes group radius local-case",
+        "radius-server host 192.168.104.147 key Passw0rd",
+        "exit"
+    ],
+    "ntp":[
+        "ntp server 192.168.104.147",
+        "ntp authenticate",
+        "ntp authentication-key 1 md5 Passw0rd",
+        "service timestamps log datetime msec",
+        "exit"
+    ],
+    "log":[
+        "logging on",
+        "logging trap",
+        "logging host 192.168.104.147"
+    ],
+    "tavoli":[
+        "line vty 0 15",
+        "transport input ssh",
+        "login authentication Bejelentkezes",
+        "exit",
+        "line console 0",
+        "logging synchronous",
+        "exit"
+    ],
+    "vlanok":[
+        "vlan 10",
+        "name KLIENSEK",
+        "vlan 20",
+        "name SZERVEREK",
+        "vlan 30",
+        "name NYOMTATOK",
+        "vlan 50",
+        "name HALOZATIESZKOZOK",
+        "vlan 99",
+        "name NEMHASZNALT",
+        "exit"
+    ],
+    "vlan 50":{
+        "description":"Management interface",
+        "ip add": "192.168.104.132 255.255.255.248",
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/1":{
+        "description":"RKobanya belso Trunk",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 10,20,30,50"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/2":{
+        "description":"RKobanya kulso Trunk",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 70,80"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/3":{
+        "description":"RKobanya belso Trunk",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 10,20,30,50"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/4":{
+        "description": "Kobanya2 ISP fele",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 80"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/5":{
+        "description":"Trunk S1Kobanya es S3Kobanya kozott",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 10,20,30,50"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/6":{
+        "description":"Trunk S2Kobanya es S3Kobanya kozott",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 10,20,30,50"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "range fa0/7 - 24, gig0/1 - 2":{
+        "description": "Nem hasznalt",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 99"
+        ],
+        "egyeb":[
+            "shutdown",
+            "exit"
+        ]
+    }
+}

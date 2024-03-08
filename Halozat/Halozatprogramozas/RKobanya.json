@@ -1,0 +1,164 @@
+{
+    "alap":[
+        "hostname RKobanya",
+        "username admin privilege 15 password Passw0rd",
+        "enable password Passw0rd",
+        "ip domain-name computerceg.hu"
+    ],
+    "ssh":[
+        "crypto key generate rsa general-keys modulus 1024",
+        "ip ssh version 2",
+        "ip ssh time-out 120",
+        "ip ssh authentication-retries 3",
+        "aaa new-model",
+        "aaa authentication login Bejelentkezes group radius local-case",
+        "radius-server host 192.168.104.147 key Passw0rd",
+        "exit"
+    ],
+    "ntp":[
+        "ntp server 192.168.104.147",
+        "ntp authenticate",
+        "ntp authentication-key 1 md5 Passw0rd",
+        "service timestamps log datetime msec",
+        "exit"
+    ],
+    "tavoli":[
+        "line vty 0 15",
+        "transport input ssh",
+        "login authentication Bejelentkezes",
+        "exit",
+        "line console 0",
+        "logging synchronous",
+        "exit"
+    ],
+    "vpnacl":[
+        "ip access-list extended Kobanya-Pecel-VPN",
+        "permit ip 192.168.101.0 0.0.0.255 192.168.104.144 0.0.0.7",
+        "permit ip 192.168.104.144 0.0.0.7 192.168.101.0 0.0.0.255",
+        "exit",
+        "ip access-list extended Kobanya-Csepel-VPN",
+        "permit ip 192.168.102.0 0.0.0.255 192.168.104.144 0.0.0.7",
+        "permit ip 192.168.104.144 0.0.0.7 192.168.102.0 0.0.0.255",
+        "exit",
+        "ip access-list extended Kobanya-Miskolc-VPN",
+        "permit ip 192.168.103.0 0.0.0.255 192.168.104.144 0.0.0.7",
+        "permit ip 192.168.104.144 0.0.0.7 192.168.103.0 0.0.0.255",
+        "exit"
+    ],
+    "fa0/0":{
+        "egyeb":[
+            "ip nat outside",
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/1.10":{
+        "description": "Kliensek",
+        "encapsulation": "dot1q 10",
+        "ip address" :"192.168.104.1 255.255.255.128",
+        "egyeb":[
+            "ip nat inside",
+            "exit"
+        ]
+    },
+    "fa0/1.20":{
+        "description": "Szerverek",
+        "encapsulation": "dot1q 20",
+        "ip address" :"192.168.104.145 255.255.255.248",
+        "egyeb":[
+            "ip nat inside",
+            "exit"
+        ]
+    },
+    "fa0/1.30":{
+        "description": "Nyomtatok",
+        "encapsulation": "dot1q 30",
+        "ip address" :"192.168.104.137 255.255.255.248",
+        "egyeb":[
+            "ip nat inside",
+            "exit"
+        ]
+    },
+    "fa0/1.50":{
+        "description": "Halozati Eszkozok",
+        "encapsulation": "dot1q 50",
+        "ip address" :"192.168.104.129 255.255.255.248",
+        "egyeb":[
+            "ip nat inside",
+            "exit"
+        ]
+    },
+    "fa0/1":{
+        "egyeb":[
+            "ip nat inside",
+            "exit"
+        ]
+    },
+    "tunnel1":{
+        "ip address" :"172.16.1.1 255.255.255.252",
+        "tunnel source": "fa0/0",
+        "tunnel destination": "10.0.0.18",
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "tunnel2":{
+        "ip address" :"172.16.1.5 255.255.255.252",
+        "tunnel source": "fa0/0",
+        "tunnel destination": "10.0.0.18",
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "tunnel3":{
+        "ip address" :"172.16.1.9 255.255.255.252",
+        "tunnel source": "fa0/0",
+        "tunnel destination": "10.0.0.26",
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "tunnel4":{
+        "ip address" :" 172.16.1.13 255.255.255.252",
+        "tunnel source": "fa0/0",
+        "tunnel destination": "10.0.0.30",
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "eigrp":[
+        "router eigrp 1",
+        "no auto-summary",
+        "passive-interface default",
+        "no passive-interface fa0/0",
+        "network 192.168.104.0 0.0.0.255",
+        "network 172.16.1.0 0.0.0.15",
+        "exit"
+    ],
+    "nat":[
+        "ip route 0.0.0.0 0.0.0.0 10.0.0.17",
+        "ip access-list extended NAT-ACL",
+        "deny ip 192.168.104.0 0.0.0.255 192.168.101.0 0.0.0.255",
+        "deny ip 192.168.104.0 0.0.0.255 192.168.102.0 0.0.0.255",
+        "deny ip 192.168.104.0 0.0.0.255 192.168.103.0 0.0.0.255",
+        "permit ip 192.168.104.0 0.0.0.127 any",
+        "ip nat inside source list NAT-ACL interface fa0/0 overload"
+    ],
+    "log":[
+        "logging on",
+        "logging trap",
+        "logging host 192.168.104.147"
+    ],
+    "dhcp":[
+        "ip dhcp excluded-address 192.168.104.1 192.168.104.2",
+        "ip dhcp pool Kliensek",
+        "dns-server 192.168.104.146",
+        "default-router 192.168.104.1",
+        "network 192.168.104.0 255.255.255.128",
+        "exit"
+    ]
+}

@@ -1,0 +1,128 @@
+{
+    "alap":[
+        "hostname S2Kobanya",
+        "username admin privilege 15 password Passw0rd",
+        "enable password Passw0rd",
+        "ip domain-name computerceg.hu"
+    ],
+    "ssh":[
+        "crypto key generate rsa general-keys modulus 1024",
+        "ip ssh version 2",
+        "ip ssh time-out 120",
+        "ip ssh authentication-retries 3",
+        "aaa new-model",
+        "aaa authentication login Bejelentkezes group radius local-case",
+        "radius-server host 192.168.104.147 key Passw0rd",
+        "exit"
+    ],
+    "ntp":[
+        "ntp server 192.168.104.147",
+        "ntp authenticate",
+        "ntp authentication-key 1 md5 Passw0rd",
+        "service timestamps log datetime msec",
+        "exit"
+    ],
+    "log":[
+        "logging on",
+        "logging trap",
+        "logging host 192.168.104.147"
+    ],
+    "tavoli":[
+        "line vty 0 15",
+        "transport input ssh",
+        "login authentication Bejelentkezes",
+        "exit",
+        "line console 0",
+        "logging synchronous",
+        "exit"
+    ],
+    "vlanok":[
+        "vlan 10",
+        "name KLIENSEK",
+        "vlan 20",
+        "name SZERVEREK",
+        "vlan 30",
+        "name NYOMTATOK",
+        "vlan 50",
+        "name HALOZATIESZKOZOK",
+        "vlan 99",
+        "name NEMHASZNALT",
+        "exit"
+    ],
+    "vlan 50":{
+        "description":"Management interface",
+        "ip add": "192.168.104.131 255.255.255.248",
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "range fa0/1 - 5":{
+        "description":"Port-channel 1 PAgP",
+        "egyeb1":[
+            "shutdown"
+        ],
+        "channel-group 1 mode":"desirable",
+        "egyeb2":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "port-channel 1":{
+        "description": "Trunk S1Kobanya es S2Kobanya kozott",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 10,20,30,50"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/6":{
+        "description":"Windows Server",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 20"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/7":{
+        "description":"Linux Server",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 20"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/8":{
+        "description":"Trunk S2Kobanya es S3Kobanya kozott",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 10,20,30,50"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "range fa0/9 - 24, gig0/1 - 2":{
+        "description": "Nem hasznalt",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 99"
+        ],
+        "egyeb":[
+            "shutdown",
+            "exit"
+        ]
+    }
+}

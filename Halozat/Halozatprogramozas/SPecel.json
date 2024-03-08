@@ -1,0 +1,124 @@
+{
+    "alap":[
+        "hostname SPecel",
+        "username admin privilege 15 password Passw0rd",
+        "enable password Passw0rd",
+        "ip domain-name computerceg.hu"
+    ],
+    "ssh":[
+        "crypto key generate rsa general-keys modulus 1024",
+        "ip ssh version 2",
+        "ip ssh time-out 120",
+        "ip ssh authentication-retries 3",
+        "aaa new-model",
+        "aaa authentication login Bejelentkezes group radius local-case",
+        "radius-server host 192.168.104.147 key Passw0rd",
+        "exit"
+    ],
+    "ntp":[
+        "ntp server 192.168.104.147",
+        "ntp authenticate",
+        "ntp authentication-key 1 md5 Passw0rd",
+        "service timestamps log datetime msec",
+        "exit"
+    ],
+    "log":[
+        "logging on",
+        "logging trap",
+        "logging host 192.168.104.147"
+    ],
+    "tavoli":[
+        "line vty 0 15",
+        "transport input ssh",
+        "login authentication Bejelentkezes",
+        "exit",
+        "line console 0",
+        "logging synchronous",
+        "exit"
+    ],
+    "vlanok":[
+        "vlan 10",
+        "name KLIENSEK",
+        "vlan 30",
+        "name NYOMTATOK",
+        "vlan 50",
+        "name HALOZATIESZKOZOK",
+        "vlan 99",
+        "name NEMHASZNALT"
+    ],
+    "vlan 50":{
+        "description":"Management interface",
+        "ip add": "192.168.101.130 255.255.255.248",
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/1":{
+        "description":"Trunk RPecel es SPecel kozott",
+        "vlanproperties":[
+            "switchport mode trunk",
+            "switchport trunk native vlan 99",
+            "switchport trunk allowed vlan 10,30,50"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/2":{
+        "description":"Kliensek",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 10"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/22":{
+        "description":"WifiAP",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 10"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/23":{
+        "description":"Nyomtato1",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 30"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "fa0/24":{
+        "description":"Nyomtato2",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 30"
+        ],
+        "egyeb":[
+            "no shutdown",
+            "exit"
+        ]
+    },
+    "range f0/3 - 21,g0/1 - 2":{
+        "description": "Nem hasznalt",
+        "vlanproperties":[
+            "switchport mode access",
+            "switchport access vlan 99"
+        ],
+        "egyeb":[
+            "shutdown",
+            "exit"
+        ]
+    }
+}
