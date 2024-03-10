@@ -234,4 +234,173 @@ SCepel	VLAN50	-	192.168.102.130	255.255.255.248	/29	Management interface
 	F0/24	vlan30	-	-	-	Nyomtato2
 	F0/2-21,G0/2	vlan99	-	-	-	Nem hasznalt
 Kliens számítógépek	LAN	-	DHCP	DHCP	DHCP	Kliens számítógépek
-Minta Router Konfiguráció
+Minta Konfiguráció - Router
+Ebben a fejezetben a routerekkel kapcsolatos konfigurációk találhatóak meg. Mivel több router beállítási palettája csak minimális dolgokban tér el egymástól, ezek nincsenek megismételve. Minden beállítási típus csak egyszer fordul elő, melyek bemutatásához a kőbányai, valamint a péceli routerek konfigurációi lettek felhasználva.
+Eszköz neve, valamint alap adatok beállítása
+hostname RPecel
+username admin privilege level 15 password Passw0rd
+enable password Passw0rd
+ip domain-name computerceg.hu
+line console 0
+	logging synchronous
+	exit
+Alinterfészek létrehozása és VLAN-hoz rendelése (ha szükséges)
+interface G0/1.10
+	encapsulation dot1q 10
+	exit
+interface G0/1
+	no shutdown
+exit
+Interfészek és alinterfészek IP címeinek és leírásainak beállítása
+interface G0/0
+	description ISP_Fele
+	ip address 10.0.0.26 255.255.255.252
+	no shutdown
+	exit
+interface G0/1.10
+	description Kliensek
+	ip address 192.168.101.1 255.255.255.128
+	exit
+Rendszeridő NTP-n keresztüli szinkronizálása a fő telephelyi Linux szerverről
+ntp server 192.168.100.147
+service timestamps log datetime msec
+!Ha hitelesiteni szeretnenk az ntp kiszolgalot:
+ntp authenticate
+ntp authentication-key 1 md5 Passw0rd
+Hozzáférési listák konfigurálása
+ip access-list extended NAT-ACL
+	deny ip 192.168.101.0 0.0.0.255 192.168.100.0 0.0.0.255
+	permit ip 192.168.101.0 0.0.0.127 any
+exit
+Túlterheléses, port alapú hálózati címfordítás beállítása
+interface G0/0
+	ip nat outside
+	exit
+interface G0/1.10
+	ip nat inside
+	exit
+ip nat inside source list NAT-ACL interface G0/0 overload
+Statikus NAT
+ip nat inside source static 192.168.100.147 10.0.0.3
+GRE Tunnel létrehozása és konfigurálása
+interface tunnel1
+	ip address 172.16.1.10 255.255.255.252
+	tunnel source G0/0
+	tunnel destination 10.0.0.2
+	no shutdown
+	exit
+Bejelentkezések fő telephelyi radius szerverrel való hitelesítése (hiányában lokális kis-nagybetü érzékenységgel)
+aaa new-model
+aaa authentication login Bejelentkezes group radius local-case
+radius-server host 192.168.100.147 key Passw0rd
+line vty 0 15
+	login authentication Bejelentkezes
+	exit
+Távoli Hozzáférés beállítása csak SSH-n keresztüli módra
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 120
+ip ssh authentication-retries 3
+line vty 0 15
+	transport input ssh
+	exit
+Syslog naplózás beállítása a Linux szerverre
+logging on
+logging trap
+logging host 192.168.100.147
+A helyi Kliens hálózatok számára DHCP szolgáltatás konfigurálása
+ip dhcp excluded-address 192.168.101.1 192.168.101.2
+ip dhcp pool Kliensek
+	default-router 192.168.101.1
+	dns-server 192.168.100.146
+	network 192.168.101.0 255.255.255.128
+	exit
+Minta konfiguráció - Switch
+A Péceli és Csepeli hálózatok switchein a következő beállítások a jellemzőek.
+Eszköz neve, valamint alap adatok beállítása
+hostname SPecel
+username admin privilege 15 passwor Passw0rd
+enable password Passw0rd
+ip domain-name computerceg.hu
+ip default-gateway 192.168.101.129
+line console 0
+	logging synchronous
+	exit
+VLAN-ok létrehozása és a megfelelő SVI-k konfigurálása (management IP, stb)
+vlan 10
+	name KLIENSEK
+vlan 30
+	name NYOMTATOK
+vlan 50
+	name HALOZATIESZKOZOK
+vlan 99
+	name NEMHASZNALT
+	exit
+interface vlan50
+	description Management interface
+	ip add 192.168.101.130 255.255.255.248
+	no shutdown
+	exit
+VLAN-ok interfészhez rendelése, nemhasznált interfészek lekapcsolása
+interface F0/1
+	description Kliensek
+	switchport mode access
+	switchport access vlan 10
+	no shutdown
+	exit
+interface range f0/2-21,G0/2
+	description Nem hasznalt
+	switchport mode access
+	switchport access vlan 99
+	shutdown
+	exit
+Router felé irányuló interfész Trunk konfigurációjának beállítása (csak adott VLAN-ok, nativ vlan)
+interface G0/1
+	description Trunk RPecel es SPecel kozott
+	switchport mode trunk
+	switchport trunk native vlan 99
+	switchport trunk allowed vlan 10,30,50
+	no shutdown
+	exit
+Portok beállítása gyors továbbító módba (spanning-tree portfast)
+!Mivel ezekben a halozat tipusokban csak egy switch talalhato, ezert az osszes portot gyorstovabbitonak tekinthetjuk
+interface range F0/1-24,G0/1-2
+	spanning-tree portfast
+	exit
+Portbiztonsági beállítások konfigurálása
+!Az elozo gondolatmenettel harmoniaban
+interface range F0/1-24,G0/1-2
+	switchport port-security
+	spanning-tree bpduguard enable
+	spanning-tree guard root
+	exit
+Távoli Hozzáférés beállítása csak SSH-n keresztüli módra
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 120
+ip ssh authentication-retries 3
+aaa new-model
+aaa authentication login Bejelentkezes group radius local-case
+radius-server host 192.168.100.147 key Passw0rd
+line vty 0 15
+	transport input ssh
+	login authentication Bejelentkezes
+	exit
+A kőbányai eszközök kiegészülnek az Etherchannel beállításával, illetve itt az Etherchannelen keresztül is Trunk vonal valósul meg. Emellett a kiegészítő harmadik switch miatt az olyan portokat, amik mögött switch található, ne állítsa gyors továbbító módba (spanning-tree portfast).
+Etherchannel létrehozása
+interface range F0/1-5
+	shutdown
+	channel-group 1 mode desirable
+	no shutdown
+	exit
+interface port-channel 1
+	no shutdown
+	exit
+!Innentol kezdve a port-channel 1 kezelheto ugy, mint egy darab interfesz, az eddig ismertetett beallitasok alkalmazhatoak ra.
+A miskolci eszköznek a VLAN-ok között forgalomirányítási feladati is vannak, illetve ezen az eszközön nincs szükség Trunk vonal beállítására. Az ASA felé menő vonal a hálózati eszközök számára fenntartott alhálózatott használja, a rajta keresztül menő forgalmak gond nélkül továbbíthatóak az internet/VPN felé, míg a hálózati eszközöket célzó csomagok kiszürhetőek maradnak, ezzel továbbra is fenntartva a hálózati eszközök hozzáférésének korlátozott módját.
+A miskolci többrétegű switch egyszerűbb kezelése érdekében érdemes továbbra is az interface-eket vlan-okba rendezni és ezen VLAN-ok SVI-inek ip-címet addni.
+Forgalomiránytás bekapcsolása
+ip routing
+Projekt szervezési eszközök
+A kkk-ban meghatározott feltételek alapján érinteni kell a projekt szervezése alatt használt, projekt elkészülését segítő technológiák és alkalmazások bemutatását. Az év végére készülő projektben az ottani csapattársakkal a kapcsolatot több felületen tartjuk. Elsődleges kommunikációs felület a Discord nevű, szöveges és hang alapú kommunikációt támogató chat-program. Ezen elsősorban a felmerülő problémák megvitatása, valamint probléma megoldására irányuló megvalósítások (például hogyan legyen megoldva a szolgáltató szimulálása) céljából van hasznosítva.
+A projekt másik két hasznos alkalmazása a Trello, mely egy Projekt menedzsment megoldás, elsődlegesen a mérföld kövek követésére van hasznosítva. Másik fontos alkalmazás a Git verziókezelő szoftvert felhőben megvalósító GitHub, amit a konfigurációs, dokumentációs, valamint a projekt szabályozásával kapcsolatos segítő fájlok (jó szokások, nevezési szabályok, stb.) tárolására, valamint azok verzió követésére hasznosítunk.
