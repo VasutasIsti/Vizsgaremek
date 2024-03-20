@@ -1,0 +1,26 @@
+Hálózat műkődésének tesztelési tervezete
+A hálózatok magas szintű tesztjeit négy kategóriába sorolhatjuk:
+	- Az eszköz eléri-e átjáróját,
+	- Az eszköz IP beállításai megfelelnek-e a tényleges hálózatnak,
+	- Az eszköz eléri-e a telephelyen belüli nyomtatókat, hálózati eszközöket,
+	- Az eszköz eléri-e az internetet,
+	- Az eszköz eléri-e a fő hálózati szervereket a VPN-en keresztül.
+A kapcsolatot specifikusan megvizsgáló tesztek alatt ki kell térni:
+	- Be van-e kötve a kábel,
+	- Hálózati eszköz használatos interfészeinek interfész-konfigurációk ellenörzése,
+	- A hálózati címfordítás működésének ellenörzésére (VPN-en keresztül tilos működnie),
+	- A redundáns kapcsolatok meglétére, azok fizikai kapcsolatának bontásos kipróbálására,
+	- A dinamikus forgalomirányító protkollok által megosztott hálózatok irányítótáblába való bekerülésének ellenörzése,
+	- PPP kapcsolatok működésének ellenörzése,
+	- ACL szabályok helyességének ellenörzése.
+VPN kapcsolati problémákat célző tesztek alatt ki kell térni:
+	- Az eszköz interfész beállításai megfelelőek-e,
+	- A VPN-nel kapcsolatos beállítsok megfelelőek-e,
+	- A VPN két végpontja között létezik-e kapcsolat.
+Hitelesítési problémákat célzó tesztek alatt ki kell térni:
+	- Az eszköz interfész beállításai megfelelőek,
+	- A kapcsolat müködőképességére (fenti szakasz),
+	- A hitelesítő szerverek elérhetőek-e,
+	- A hitelesítő szervereken futnak-e a megfelelő szolgálatások,
+	- A hitelesítő szerveren felvannak-e véve az eszköz/felhasználó szükséges adatai.
+A hálózatok tesztelését VLAN-onként legalább egyszer el kell végezni. Ez telephelyenként 3-5 tesztet jelent, melyek eredményes lefolyása esetén a hálózat üzemképesnek tekinthető. Az eddig említett teszteken felül ki kell térni a tiltott kapcsolatok tesztelésére is, hogy azok valóban nem működnek-e.
