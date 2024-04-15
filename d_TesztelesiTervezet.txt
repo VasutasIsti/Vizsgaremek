@@ -1,5 +1,5 @@
 Hálózat műkődésének tesztelési tervezete
-A hálózatok magas szintű tesztjeit négy kategóriába sorolhatjuk:
+A hálózatok magas szintű tesztjeit öt kategóriába sorolhatjuk:
 	- Az eszköz eléri-e átjáróját,
 	- Az eszköz IP beállításai megfelelnek-e a tényleges hálózatnak,
 	- Az eszköz eléri-e a telephelyen belüli nyomtatókat, hálózati eszközöket,

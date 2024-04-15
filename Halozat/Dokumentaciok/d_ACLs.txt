@@ -1,0 +1,163 @@
+!Kobanya szolgaltatoi interface out
+ip access-list extended KobanyaKi
+permit ip 192.168.104.0 255.255.255.128 any any
+permit ip 192.168.104.144 255.255.255.248 any any
+permit gre any any
+exit
+!
+!Kobanya szolgaltatoi interface in
+ip access-list extended KobanyaBe
+permit ip any 192.168.104.0 255.255.255.128 any established
+permit ip any 192.168.104.144 255.255.255.248 any established
+permit gre any any
+permit tcp host 192.168.104.146 eq 80 any
+permit tcp host 192.168.104.146 eq 443 any
+permit tcp host 192.168.104.147 eq 80 any
+permit tcp host 192.168.104.147 eq 443 any
+exit
+!
+!Kobanya nyomtatok out
+ip access-list extended KobanyaNyomtatok
+permit ip 192.168.104.0 255.255.255.128 any 192.168.104.136 255.255.255.248 any
+permit ip 192.168.104.144 255.255.255.248 any 192.168.104.136 255.255.255.248 any
+exit
+!
+!Kobanya VPN-ek
+ip access-list extended Kobanya-Pecel-VPNBe
+permit ip 192.168.101.0 255.255.255.128 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.101.0 255.255.255.128 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.101.128 255.255.255.248 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.101.128 255.255.255.248 any 192.168.104.147 255.255.255.255 any
+exit
+ip access-list extended Kobanya-Pecel-VPNKi
+permit ip 192.168.104.144 255.255.255.248 any 192.168.101.0 255.255.255.128 any established
+permit eigrp any any
+exit
+ip access-list extended Kobanya-Csepel-VPNBe
+permit ip 192.168.102.0 255.255.255.128 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.102.0 255.255.255.128 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.102.128 255.255.255.248 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.102.128 255.255.255.248 any 192.168.104.147 255.255.255.255 any
+exit
+ip access-list extended Kobanya-Csepel-VPNKi
+permit ip 192.168.104.144 255.255.255.248 any 192.168.102.0 255.255.255.128 any established
+permit eigrp any any
+exit
+ip access-list extended Kobanya-Miskolc-VPNBe
+permit ip 192.168.103.0 255.255.255.128 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.103.0 255.255.255.128 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.103.128 255.255.255.248 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.103.128 255.255.255.248 any 192.168.104.147 255.255.255.255 any
+exit
+ip access-list extended Kobanya-Miskolc-VPNKi
+permit ip 192.168.104.144 255.255.255.248 any 192.168.103.0 255.255.255.128 any established
+permit eigrp any any
+exit
+!
+!-----------------------------------------------------------
+!
+!Pecel szolgaltatoi interface out
+ip access-list extended PecelKi
+permit ip 192.168.101.0 255.255.255.128 any any
+permit gre any any
+exit
+!
+!Pecel szolgaltatoi interface in
+ip access-list extended PecelBe
+permit ip any 192.168.101.0 255.255.255.128 any established
+permit gre any any
+exit
+!
+!Pecel nyomtatok out
+ip access-list extended PecelNyomtatok
+permit ip 192.168.101.0 255.255.255.128 any 192.168.101.136 255.255.255.248 any
+permit ip 192.168.104.144 255.255.255.248 any 192.168.101.136 255.255.255.248 any
+exit
+!
+!Pecel VPN-ek
+ip access-list extended Kobanya-Pecel-VPNBe
+permit ip 192.168.104.144 255.255.255.248 any 192.168.101.0 255.255.255.128 any established
+permit ip 192.168.104.144 255.255.255.248 any 192.168.101.128 255.255.255.248 any
+permit ip 192.168.104.144 255.255.255.248 any 192.168.101.136 255.255.255.248 any
+exit
+ip access-list extended Kobanya-Pecel-VPNKi
+permit ip 192.168.101.0 255.255.255.128 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.101.0 255.255.255.128 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.101.128 255.255.255.248 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.101.128 255.255.255.248 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.101.136 255.255.255.248 any 192.168.104.146 255.255.255.255 any established
+permit ip 192.168.101.136 255.255.255.248 any 192.168.104.147 255.255.255.255 any established
+permit eigrp any any
+exit
+!
+!-----------------------------------------------------------
+!
+!Csepel szolgaltatoi interface out
+ip access-list extended CsepelKi
+permit ip 192.168.102.0 255.255.255.128 any any
+permit gre any any
+exit
+!
+!Csepel szolgaltatoi interface in
+ip access-list extended CsepelBe
+permit ip any 192.168.102.0 255.255.255.128 any established
+permit gre any any
+exit
+!
+!Csepel nyomtatok out
+ip access-list extended CsepelNyomtatok
+permit ip 192.168.102.0 255.255.255.128 any 192.168.102.136 255.255.255.248 any
+permit ip 192.168.104.144 255.255.255.248 any 192.168.102.136 255.255.255.248 any
+exit
+!
+!Csepel VPN-ek
+ip access-list extended Kobanya-Csepel-VPNBe
+permit ip 192.168.104.144 255.255.255.248 any 192.168.102.0 255.255.255.128 any established
+permit ip 192.168.104.144 255.255.255.248 any 192.168.102.128 255.255.255.248 any
+permit ip 192.168.104.144 255.255.255.248 any 192.168.102.136 255.255.255.248 any
+exit
+ip access-list extended Kobanya-Csepel-VPNKi
+permit ip 192.168.102.0 255.255.255.128 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.102.0 255.255.255.128 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.102.128 255.255.255.248 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.102.128 255.255.255.248 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.102.136 255.255.255.248 any 192.168.104.146 255.255.255.255 any established
+permit ip 192.168.102.136 255.255.255.248 any 192.168.104.147 255.255.255.255 any established
+permit eigrp any any
+exit
+!
+!-----------------------------------------------------------
+!
+!Miskolc szolgaltatoi interface out
+ip access-list extended MiskolcKi
+permit ip 192.168.103.0 255.255.255.128 any any
+permit gre any any
+exit
+!
+!Miskolc szolgaltatoi interface in
+ip access-list extended MiskolcBe
+permit ip any 192.168.103.0 255.255.255.128 any established
+permit gre any any
+exit
+!
+!Miskolc nyomtatok out
+ip access-list extended MiskolcNyomtatok
+permit ip 192.168.103.0 255.255.255.128 any 192.168.103.136 255.255.255.248 any
+permit ip 192.168.104.144 255.255.255.248 any 192.168.103.136 255.255.255.248 any
+exit
+!
+!Miskolc VPN-ek
+ip access-list extended Kobanya-Miskolc-VPNBe
+permit ip 192.168.104.144 255.255.255.248 any 192.168.103.0 255.255.255.128 any established
+permit ip 192.168.104.144 255.255.255.248 any 192.168.103.128 255.255.255.248 any
+permit ip 192.168.104.144 255.255.255.248 any 192.168.103.136 255.255.255.248 any
+exit
+ip access-list extended Kobanya-Miskolc-VPNKi
+permit ip 192.168.103.0 255.255.255.128 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.103.0 255.255.255.128 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.103.128 255.255.255.248 any 192.168.104.146 255.255.255.255 any
+permit ip 192.168.103.128 255.255.255.248 any 192.168.104.147 255.255.255.255 any
+permit ip 192.168.103.136 255.255.255.248 any 192.168.104.146 255.255.255.255 any established
+permit ip 192.168.103.136 255.255.255.248 any 192.168.104.147 255.255.255.255 any established
+permit eigrp any any
+exit
