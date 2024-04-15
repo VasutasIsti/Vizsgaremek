@@ -11,10 +11,10 @@ ip ssh time-out 120
 ip ssh authentication-retries 3
 aaa new-model
 aaa authentication login Bejelentkezes group radius local-case
-radius-server host 192.168.100.147 key Passw0rd
+radius-server host 192.168.104.147 key Passw0rd
 
 !rendszerido
-ntp server 192.168.100.147
+ntp server 192.168.104.147
 ntp authenticate
 ntp authentication-key 1 md5 Passw0rd
 service timestamps log datetime msec
@@ -36,8 +36,8 @@ service timestamps log datetime msec
 
 !VPN ACL Kobanya es Pecel kozott
 ip access-list extended K-P-VPN
-permit ip 192.168.101.0 0.0.0.127 192.168.100.144 0.0.0.7
-permit ip 192.168.100.144 0.0.0.7 192.168.101.0 0.0.0.127
+permit ip 192.168.101.0 0.0.0.127 192.168.104.144 0.0.0.7
+permit ip 192.168.104.144 0.0.0.7 192.168.101.0 0.0.0.127
 exit
 
 !crypto map-ek (kesobbi implementalasra)
@@ -116,17 +116,17 @@ exit
 !statikus utvonalak, NAT es azt hasznalo halozatok, syslog
 ip route 0.0.0.0 0.0.0.0 10.0.0.17
 ip access-list extended NAT-ACL
-deny ip 192.168.101.0 0.0.0.255 192.168.100.0 0.0.0.255
+deny ip 192.168.101.0 0.0.0.255 192.168.104.0 0.0.0.255
 permit ip 192.168.101.0 0.0.0.127 any
 ip nat inside source list NAT-ACL interface G0/0 overload
 logging on
 logging trap
-logging host 192.168.100.147
+logging host 192.168.104.147
 
 !DHCP a kliensek szamara
 ip dhcp excluded-address 192.168.101.1 192.168.101.2
 ip dhcp pool Kliensek
-dns-server 192.168.100.146
+dns-server 192.168.104.146
 default-router 192.168.101.1
 network 192.168.101.0 255.255.255.128
 exit
