@@ -1,0 +1,21 @@
+A hangot később vágjuk a videó alá, hogy ne legyen zaj a háttérben és hasonlók.
+A dokumentáló videóban ki kell térni az allábbiakra:
+	- Fizikailag hogyan vannak összekötve az eszközök, képek a fizikai eszközökről.
+	- A windows szerver:
+		- DHCP scope bemutatása, az a DHCP a kőbányai hálózat klienseinek
+		- A szerver statikus IP címe be van állítva
+		- A szerver biztonsági mentése, ami a userek home mappáit menti ki külön meghajtóra (mi esetünkben virtuális merevlemezre, tesztelés miatt)
+		- Tartományba lehet(ne) léptetni a klienseket, de mi ezt ugye nem tesszük meg, mivel mindenhol rendszergazdai fiókok vannak. Viszont a tartományi hitelesítést be lehet mutatni, ha elérjük a fájlmegosztást és az adott user home mappáját. Felteszünk oda egy fájlt egy kliens gépről, majd megmutatjuk, hogy a szerveren is ott van az a fájl.
+		- DNS feloldás bemutatása, elérjük az index.hu-t például, van internet
+	- A linux szerver:
+		- A kőbányai hálózatról elérhető a weboldal
+		- Beléphetünk a phpmyadmin-ba, hogy kényelmesen tudjuk matatni az adatbázisokat
+		- Adatbázisok bemutatása, a cég szemponjából
+		- Cockpitre kitérés röviden, ez csak a könnyebb rendszergazdai munkát teszi lehetővé, mivel grafikus és minden egy helyen van benne
+		- Statikus IP cím megmutatása
+		- TFTP szolgáltatás (felmentünk rá egy router configot)
+		- Naplózás és interfész lekérdező szkript bemutatása (ha van rá idő)
+	- Az összes szerverelérés megmutatása úgy, hogy még VPN-en keresztül is működik (Fájlmegosztás, weboldal, phpmyadmin, VPN-en keresztül mentünk rá configot TFTP-n)
+	- Egy kábeles kliens tesztelése a kőbányai hálózatban (eléri az internetet, szervereket, kap DHCP-n címet a windows szervertől)
+	- Egy wifi-s kliens tesztelése (eléri a kőbányai fájlmegosztást, weboldalt és phpmyadmint. Ez VPN-en keresztüli hálózatból legyen inkább, a kábelessel teszteljük a kőbányai hálózatot)
+	- Bele lehet ssh-zni a kőbányai routerbe, kiírathatjuk a running configot
