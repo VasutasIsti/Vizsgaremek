@@ -1,0 +1,14 @@
+# ASA Érvelés
+#
+# - - Modell	Ár	Képesség
+# - - ASA 5505	150$	2VLAN, 150Mbps, Nincs támogatás, Van a suliban!
+# - - ASA 5506	~800$	3VLAN, 250Mbps, Nincs támogatás, Nincs!
+# - - Ws-C2960s-24ts-L	~400$	Nincs vlan limit, támogatott, multilayer
+#
+# - Az ASA-k közül már az eggyel nagyobb (5506 / 5506x) sem tud több számunkra megfelelő számú VLAN-t kezelni így
+#   marad a jelenlegi ASA (átviteli teljesítmény nem feltétlenül jelent problémát) egy több rétegű kapcsolóval lesz
+#   kiegészítve. A többrétegű kapcsoló költséghatékonyabb, mint az ASA-k liszenszei, nem kell megújítani, valamint a 
+#   belső (helyi, telephelyi) hálózatot nagyobb átviteli teljesítménnyel szolgálja ki, mint az ASA-k.
+# - A gyártó által már csak egy ASA modell van forgalmazva, az ASA 9300, ami viszont a jelenlegi telephelyekre nagyon is túlméretezett,
+#   hatalmas teljesítményű és borsos árú eszközök. Beszerzésükre észérv nincs, legfeljebb a Szerverek hálózatához, de még oda is indokolatlan.
+#   Ekkora eszközt ISP-k, illetve tárhely szolgáltatók alkalmaznak.

@@ -1,0 +1,12 @@
+# Felhasznált Hálózati Eszközök
+#
+# - A projektben felhasznált eszközök elsődlegesen oktatási intézményünk eszközparkja definiálja, a fizikai megvalósítást illetően legalábbis biztosan.
+# - Egy valós környezetben sokminden befolyásolná az eszközparkot érintő választásokat, például új/használt eszköz, gyártó, támogatottság, elérhetőség,
+#   praktikusság.
+#
+# Eszközök felsorolása
+#Típus	Modell	Gyártó	Darabszám	Licence	Leírás/használt technológiák
+Switch	2960S	Cisco	4	Base	24 FastEth., 2 GigabitEth., VLAN és Trunking, STP, PAgP/LACP
+Router	2600	Cisco	4	securityk9	2 FastEth., VPN, NAT, HSRP, ACL
+ASA	5505	Cisco	2	Base	8 FastEth., NAT, VPN, ACL, VLAN
+MLS	2960?	Cisco	1	Base	Multilayer Swithcing?
