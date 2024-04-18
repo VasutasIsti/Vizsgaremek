@@ -62,7 +62,7 @@ logging synchronous
 exit
 
 !Interfeszek
-interface Gigabit0/0
+interface fa0/0
 description ISP fele
 ip address dhcp
 ip nat outside
@@ -72,16 +72,16 @@ exit
 interface tunnel1
 ip address 172.16.1.10 255.255.255.252
 no shutdown
-tunnel source G0/0
+tunnel source fa0/0
 tunnel destination 10.0.0.2
 exit
 interface tunnel2
 ip addres 172.16.1.17 255.255.255.252
 no shutdown
-tunnel source G0/0
+tunnel source fa0/0
 tunnel destination 10.0.0.30
 exit
-interface Gigabit0/1.10
+interface gigabit0/1.10
 description Kliensek
 encapsulation dot1q 10
 ip address 192.168.101.1 255.255.255.128
