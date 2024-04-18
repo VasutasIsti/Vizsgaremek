@@ -1,0 +1,24 @@
+Gyuri:
+Üdvözlünk mindenkit a vizsgaremekünket bemutató videóban!
+Az én nevem Bruder György
+István:
+Enyém pedig Nagy István
+Gyuri:
+Vágjunk is bele!
+
+István:
+Kezdjük is a fizikailag megvalósított topológiával.
+Ez a videón látható, kezdve a fő telephelyen lévő, nagy routerrel.
+Ezt követi a fő telephelyen lévő két switch, ami a budapesti telephelyen helyezkedik el.
+Itt látható egy a sok helyen található wifi access point-unkból.
+Ilyen van a budapesti, péceli, csepeli és miskolci hálózatban is.
+Ez a patch panel, amivel a számítógépeinket kötjük össze a hálózati eszközökkel. Akár hálózatra kötjük őket, akár konzol porton konfigurálunk velük.
+Ezzel a switcchel szimuláljuk le az internetet, ettől kapják majd meg a routereink a szolgáltatótól kapott IP címet a szimulálás során.
+Emellett itt található a hardveres tűzfalunk, avagy ASÁ-nk, amit topológia szerint a szervereink elé helyeztünk el.
+
+Gyuri:
+Ezt követően beszéljünk egy kicsit a szervereink szolgáltatásairól.
+Kezdjük a bemutatást a windows szerverünkkel, mivel ez végzi el a nagyobb részét a feladatoknak.
+Ez a windows szerver oszt DHCP-n keresztül IP címeket a kőbányai telephelyen a kliensek alhálózatba.
+Itt látható is, ahogy a számítógép a Kliens vlan-ba van kötve a kőbányai hálózaton, és megkapta az IP címét a szervertől, amin meg is jelent bejegyzésként, mint kiosztott cím.
+És ugyanez a szerver oszt címet a wifin keresztül csatlakozó eszközöknek is a fő telephelyünkön.
